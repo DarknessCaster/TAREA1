@@ -33,7 +33,7 @@ bool desempaquetar(Protocolo&proto, int tam){
     return true;
 }
 
-void guardarMensaje(char cadena[]){ // Esta funcion requiere una linea de codigo en main(): FILE *archivo;
+void guardarMensaje(char cadena[]){
     FILE *archivo;
     printf("\n La cadena en la funcion es %s", cadena);
     int aux;
