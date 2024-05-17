@@ -40,25 +40,22 @@ void guardarMensaje(char cadena[]){
     //FILE *archivo = fopen("mensajes.txt", "a+");
     archivo = fopen("mensajes.txt", "a+");
     aux = fgetc(archivo); // Lee el primer caracter del archivo
-                    if(aux != EOF){ // Si el archivo esta vacio su primer caracter sera "EOF". Solo cuando se comienza a escribir en el archivo no es necesario un salto de linea.
-                        fseek(archivo, 0, SEEK_END);
-                        fprintf(archivo, "\n");
-                    }
+        if(aux != EOF){ // Si el archivo esta vacio su primer caracter sera "EOF". Solo cuando se comienza a escribir en el archivo no es necesario un salto de linea.
+            fseek(archivo, 0, SEEK_END);
+            fprintf(archivo, "\n");
+        }
     
-                    for(int i=0; i<15 ; i++){ // Se hace asi por si hay espacios en la cadena de caracteres.
-                        if(strcmp(&cadena[i], "\0") == 0){ // Evita escribir caracteres nulos cuando el largo de la cadena guardada es menor a 15.
-                            break;
-                        }
-                        fprintf(archivo, "%c", cadena[i]); // Escribe en el archivo la cadena caracter a caracter.                      
-                    }
-                    fclose(archivo);
+        for(int i=0; i<15 ; i++){ // Se hace asi por si hay espacios en la cadena de caracteres.
+            if(strcmp(&cadena[i], "\0") == 0){ // Evita escribir caracteres nulos cuando el largo de la cadena guardada es menor a 15.
+                break;
+            }
+            fprintf(archivo, "%c", cadena[i]); // Escribe en el archivo la cadena caracter a caracter.                      
+        }
+        fclose(archivo);
 }
 
-void mostrarArchivo(){
-    char cadena[25];
+void mostrarArchivo(char cadena[]){
     char aux[15];
-    printf("\n Ingrese el nombre del archivo que desea ver: ");
-    scanf(" %[^\n]s", cadena);
     FILE *lectura = fopen(strcat((cadena), ".txt"), "r");
     if(lectura == NULL){
         printf("\n El archivo %s no existe en nuestros registros.", cadena);

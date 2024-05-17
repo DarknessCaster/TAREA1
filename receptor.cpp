@@ -26,18 +26,25 @@ int main(){
     switch(proto.CMD){
         case 1:
             estado = desempaquetar(proto, proto.LNG+2);
-            if (estado == true){
-                msg_s_err++;
-            } else{
-                msg_c_err++;
-            } 
-            msg_total++;
+            if (estado == true) // Si no hay error
+                msg_s_err++; 
+            else // Si hay error
+                msg_c_err++; 
+            
+            msg_total++; 
             if (msg_total == 10){
                 porcentaje_a = 100*(msg_s_err/msg_total);
                 porcentaje_e = 100*(msg_c_err/msg_total);
                 printf("El porcentaje de acierto es: %f\n", porcentaje_a);
                 printf("El porcentaje de error es: %f\n", porcentaje_e);
             }
+            break;
+        case 2:
+            desempaquetar(proto, proto.LNG+2);
+            guardarMensaje((char*)proto.DATA);
+            break;
+        case 3:
+            
             break;
         default:
             break;

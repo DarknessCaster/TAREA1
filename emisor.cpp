@@ -4,6 +4,7 @@
 
 Protocolo proto;
 int msg_enviados;
+char nombre_arch[20];
 
 int main(){
     do {
@@ -34,11 +35,16 @@ int main(){
                 scanf(" %[^\n]s", proto.DATA);
                 empaquetar(proto);
                 // Ejecutar emisor
+                msg_enviados++;
                 break;
             case 3:
-                mostrarArchivo();
+                printf("\nIngrese el nombre del archivo de texto a mostrar:");
+                scanf(" %[^\n]s", nombre_arch);
+                // Ejecutar emisor
+                mostrarArchivo(nombre_arch);
                 break;
             case 4:
+                printf("Mensajes enviados: %d", msg_enviados);
                 break;
             case 5:
                 
