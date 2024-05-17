@@ -2,6 +2,10 @@
 #include <string.h>
 #include <stdio.h>
 
+//        A
+//       | |
+//       | |
+
 int empaquetar(Protocolo &proto){
     // if (proto.LNG + 2 > LARGO_DATA + 2){
     //     return -1;
