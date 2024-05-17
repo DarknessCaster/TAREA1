@@ -59,6 +59,6 @@ int main(){
             default:
                 break;
         }
-    } while (proto.CMD != 7);
+    } while (proto.CMD != 7); // se cierra el emisor
     return 0;
 }
