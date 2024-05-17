@@ -39,6 +39,7 @@ int main(){
             case 4:
                 break;
             case 5:
+                
                 break;
             case 6:
                 crearArchivo();
