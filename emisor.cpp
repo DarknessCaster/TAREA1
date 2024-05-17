@@ -3,6 +3,7 @@
 #include "funciones.h"
 
 Protocolo proto;
+int msg_enviados;
 
 int main(){
     do {
@@ -23,7 +24,10 @@ int main(){
                 printf("\nIngrese el mensaje a enviar (15 caracteres maximo):");
                 scanf(" %[^\n]s", proto.DATA);
                 empaquetar(proto);
-                // Ejecutar emisor
+                for(int i = 0; i < 10; i++){ // Para enviar 10 veces?
+                    // Ejecutar emisor
+                    msg_enviados++;
+                    }
                 break;
             case 2:
                 printf("\nIngrese el mensaje de texto a enviar (15 caracteres maximo):");
