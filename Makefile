@@ -1,6 +1,6 @@
 all:
 	g++ -c funciones.cpp
-	g++ -c menu.cpp
-	g++ -o ejecutable funciones.o menu.o
+	g++ -c emisor.cpp
+	g++ -o ejecutable funciones.o emisor.o
 	del *.o
 	./ejecutable
