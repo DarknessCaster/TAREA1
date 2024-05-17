@@ -1,7 +1,6 @@
 #include "funciones.h"
 #include <string.h>
 #include <stdio.h>
-//puto el que lo lea
 
 int empaquetar(Protocolo &proto){
     // if (proto.LNG + 2 > LARGO_DATA + 2){
@@ -94,4 +93,12 @@ int fcs(BYTE * arr, int tam){
         } 
     }
     return sum_bits;
+}
+
+void enviarBytes(){
+
+}
+
+void recibirBytes(){
+    
 }

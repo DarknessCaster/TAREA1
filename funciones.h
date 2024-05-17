@@ -9,5 +9,7 @@ int fcs(BYTE * arr, int tam);
 void crearArchivo();
 void mostrarArchivo(char cadena[]);
 void guardarMensaje(char cadena[]);
+void enviarBytes();
+void recibirBytes();
 
 #endif
