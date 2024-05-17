@@ -25,13 +25,13 @@ int main(){
                 printf("\nIngrese el mensaje a enviar (15 caracteres maximo):");
                 scanf(" %[^\n]s", proto.DATA);
                 empaquetar(proto);
-                // Ejecutar funcion de enviar mensaje de prueba
+                // Ejecutar emisor
                 break;
             case 2:
                 printf("\nIngrese el mensaje de texto a enviar (15 caracteres maximo):");
                 scanf(" %[^\n]s", proto.DATA);
                 empaquetar(proto);
-                // Ejecutar funcion de
+                // Ejecutar emisor
                 break;
             case 3:
                 
@@ -45,7 +45,7 @@ int main(){
                 printf("\nIngrese el mensaje a enviar (15 caracteres maximo):");
                 scanf(" %[^\n]s", proto.DATA);
                 empaquetar(proto);
-                // Ejecutar funcion para enviar mensaje
+                // Ejecutar emisor
                 break;
             default:
                 break;
