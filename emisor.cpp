@@ -15,6 +15,9 @@ int main(){
     if(wiringPiSetup() == -1)
     exit(1);
 
+    //CONFIGURA PINES DE ENTRADA SALIDA
+    pinMode(TX_PIN, OUTPUT);
+    
     //INICIA MENU
     do {
         printf("\n================== MENU ==================\n");

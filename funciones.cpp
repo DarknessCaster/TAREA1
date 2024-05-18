@@ -1,7 +1,7 @@
-#include "funciones.h"
 #include "wiringPi.h"
 #include <string.h>
 #include <stdio.h>
+#include "funciones.h"
 
 int empaquetar(Protocolo &proto){
     // if (proto.LNG + 2 > LARGO_DATA + 2){
@@ -96,28 +96,45 @@ int fcs(BYTE * arr, int tam){
     return sum_bits;
 }
 
-void enviarBytes(Protocolo proto){
+void enviarBytes(Protocolo proto, bool transmissionStarted){
     volatile int nbits = 0; // contador de bits enviados
     volatile int nbytes = 0; // contador de bytes enviados
     int nones = 0;
     if(transmissionStarted){ // Si transmision se inicia...
-    //Escribe en el pin TX
-    if(nbits == 0){
-      digitalWrite(TX_PIN, 0); // Se envia bit de inicio
-    }else if(nbits < 9){
-      // envia bit a bit el dato hasta enviar el byte
-      digitalWrite(TX_PIN, (proto.FRAMES[nbytes] >> (nbits-1)) & 0x01); 
-//      printf("%d",(bytes[nbytes]>>(nbits-1))&0x01);
-    }else if(nbits == 9){
-//      printf("\n");
-      // Guardar bits activos (cantidad de 1s) en la variables nones
-      nones = (proto.FRAMES[nbytes]&0x01) + ((proto.FRAMES[nbytes]&0x02)>>1) + ((proto.FRAMES[nbytes]&0x04)>>2) + 
-        ((proto.FRAMES[nbytes]&0x08)>>3) + ((proto.FRAMES[nbytes]&0x10)>>4) + ((proto.FRAMES[nbytes]&0x20)>>5) + 
-        ((proto.FRAMES[nbytes]&0x40)>>6) + ((proto.FRAMES[nbytes]&0x80)>>7);
-      digitalWrite(TX_PIN, nones%2==0); // Se calcula el Bit de paridad PAR 
-    }else{
-      digitalWrite(TX_PIN, 1); //Canal libre durante 2 clocks
-    }
+        //Escribe en el pin TX
+        if(nbits == 0){
+        digitalWrite(TX_PIN, 0); // Se envia bit de inicio
+        }else if(nbits < 9){
+        // envia bit a bit el dato hasta enviar el byte
+        digitalWrite(TX_PIN, (proto.FRAMES[nbytes] >> (nbits-1)) & 0x01); 
+    //      printf("%d",(bytes[nbytes]>>(nbits-1))&0x01);
+        }else if(nbits == 9){
+    //      printf("\n");
+        // Guardar bits activos (cantidad de 1s) en la variables nones
+        nones = (proto.FRAMES[nbytes]&0x01) + ((proto.FRAMES[nbytes]&0x02)>>1) + ((proto.FRAMES[nbytes]&0x04)>>2) + 
+            ((proto.FRAMES[nbytes]&0x08)>>3) + ((proto.FRAMES[nbytes]&0x10)>>4) + ((proto.FRAMES[nbytes]&0x20)>>5) + 
+            ((proto.FRAMES[nbytes]&0x40)>>6) + ((proto.FRAMES[nbytes]&0x80)>>7);
+        digitalWrite(TX_PIN, nones%2==0); // Se calcula el Bit de paridad PAR 
+        }else{
+        digitalWrite(TX_PIN, 1); //Canal libre durante 2 clocks
+        }
+        //Actualiza contador de bits
+        nbits++;
+
+        //Actualiza contador de bytes
+        if(nbits == 11){
+            nbits = 0;
+            nbytes++;
+
+            //Finaliza la comunicación
+            if(nbytes==len){
+            transmissionStarted = false;
+            nbytes = 0;
+            }
+        }
+    } else{ // Si no ha iniciado la transmision...
+        //Canal en reposo
+        digitalWrite(TX_PIN, 1);
     }
 }
 

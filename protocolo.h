@@ -2,9 +2,9 @@
 #define PROTOCOLO_H
 #define BYTE unsigned char
 #define LARGO_DATA 15
-#define TX_PIN 
-#define RX_PIN
-#define CLOCK_PIN
+#define TX_PIN 2
+#define RX_PIN 3
+#define CLOCK_PIN 23
 
 struct Protocolo{
     BYTE CMD; // 4 BITS
