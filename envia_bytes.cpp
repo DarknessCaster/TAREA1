@@ -30,6 +30,11 @@ int main(){
   /*CONFIGURA INTERRUPCION PIN CLOCK (PUENTEADO A PIN PWM)
   * Configura una interrupcion en DELAY_PIN para activarse en un flanco
   * ascendente (INT_EDGE_RISING). La funcion de interrupcion es cb.
+  * Flanco ascendente: Que la señal suba de 0 a 1. 
+  * Aquí, INT_EDGE_RISING indica que la interrupción debe activarse cuando el pin DELAY_PIN 
+  * detecta una transición de bajo a alto (un flanco ascendente). Cada vez que ocurre esta transición, 
+  * se llama a la función de interrupción cb. Esto es útil para sincronizar 
+  * la transmisión de datos con un reloj o una señal externa que proporciona pulsos regulares.
   */
   if(wiringPiISR(DELAY_PIN, INT_EDGE_RISING, &cb) < 0){
     printf("Unable to start interrupt function\n");
@@ -61,7 +66,7 @@ void cb(void){
       nones = (bytes[nbytes]&0x01) + ((bytes[nbytes]&0x02)>>1) + ((bytes[nbytes]&0x04)>>2) + 
         ((bytes[nbytes]&0x08)>>3) + ((bytes[nbytes]&0x10)>>4) + ((bytes[nbytes]&0x20)>>5) + 
         ((bytes[nbytes]&0x40)>>6) + ((bytes[nbytes]&0x80)>>7);
-      digitalWrite(TX_PIN, nones%2==0); //Bit de paridad par
+      digitalWrite(TX_PIN, nones%2==0); //Bit de paridad
     }else{
       digitalWrite(TX_PIN, 1); //Canal libre durante 2 clocks
     }
@@ -71,18 +76,18 @@ void cb(void){
 
     //Actualiza contador de bytes
     if(nbits == 11){
-      nbits = 0;
-      nbytes++;
+        nbits = 0;
+        nbytes++;
 
-      //Finaliza la comunicación
-      if(nbytes==len){
+        //Finaliza la comunicación
+        if(nbytes==len){
         transmissionStarted = false;
         nbytes = 0;
-      }
+        }
     }
-  }else{
-    //Canal en reposo transmissionStarted = false
-    digitalWrite(TX_PIN, 1); // Para T.A. 1 es reposo 
+  } else{ // Si no ha iniciado la transmision...
+    //Canal en reposo
+    digitalWrite(TX_PIN, 1);
   }
 }
 
