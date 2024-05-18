@@ -30,7 +30,7 @@ bool desempaquetar(Protocolo&proto, int tam){
     if (fcs_recibido != proto.FCS){                     //filtro 2, correspondiente a la comparacion de los fcs 
         return false;
     } 
-    return true;
+    return true; // Desempaquetado correctamente
 }
 
 void guardarMensaje(char cadena[]){
