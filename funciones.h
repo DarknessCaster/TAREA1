@@ -9,7 +9,8 @@ int fcs(BYTE * arr, int tam);
 void crearArchivo();
 void mostrarArchivo(char cadena[]);
 void guardarMensaje(char cadena[]);
-void enviarBytes();
+void enviarBytes(Protocolo proto);
 void recibirBytes();
+void startTransmission();
 
 #endif

@@ -1,12 +1,21 @@
+#include <wiringPi.h>
 #include <stdio.h>
 #include <string.h>
 #include "funciones.h"
 
+// VARIABLES GLOBALES
 Protocolo proto;
 int msg_enviados;
 char nombre_arch[20];
+bool transmissionStarted = false; // Indica si la transmision empieza o no.
+
 
 int main(){
+    //INICIA WIRINGPI
+    if(wiringPiSetup() == -1)
+    exit(1);
+
+    //INICIA MENU
     do {
         printf("\n================== MENU ==================\n");
         printf("1. Enviar mensaje de prueba\n");
@@ -19,6 +28,7 @@ int main(){
         printf("==============================================\n");
         printf("Ingrese la opcion deseada: ");
         scanf("%d", &proto.CMD);
+        printf("%x", proto.CMD);
         getchar(); 
         switch (proto.CMD) {
             case 1:

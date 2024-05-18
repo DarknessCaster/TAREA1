@@ -37,7 +37,7 @@ int main(){
   * la transmisión de datos con un reloj o una señal externa que proporciona pulsos regulares.
   */
   if(wiringPiISR(DELAY_PIN, INT_EDGE_RISING, &cb) < 0){
-    printf("Unable to start interrupt function\n");
+    printf("No se puede iniciar la función de interrupción\n");
   }
 
   //CONFIGURA PINES DE ENTRADA SALIDA
@@ -63,10 +63,11 @@ void cb(void){
 //      printf("%d",(bytes[nbytes]>>(nbits-1))&0x01);
     }else if(nbits == 9){
 //      printf("\n");
+      // Guardar bits activos (cantidad de 1s) en la variables nones
       nones = (bytes[nbytes]&0x01) + ((bytes[nbytes]&0x02)>>1) + ((bytes[nbytes]&0x04)>>2) + 
         ((bytes[nbytes]&0x08)>>3) + ((bytes[nbytes]&0x10)>>4) + ((bytes[nbytes]&0x20)>>5) + 
         ((bytes[nbytes]&0x40)>>6) + ((bytes[nbytes]&0x80)>>7);
-      digitalWrite(TX_PIN, nones%2==0); //Bit de paridad
+      digitalWrite(TX_PIN, nones%2==0); // Se calcula el Bit de paridad PAR 
     }else{
       digitalWrite(TX_PIN, 1); //Canal libre durante 2 clocks
     }
