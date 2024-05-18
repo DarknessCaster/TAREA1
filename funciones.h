@@ -4,7 +4,8 @@
 #include "protocolo.h"
 
 int empaquetar(Protocolo &proto);
-bool desempaquetar(Protocolo&proto, int tam);
+bool desempaquetar(Protocolo&proto, int tam);   
+bool desempaquetar2(Protocolo&proto, int tam);   
 int fcs(BYTE * arr, int tam);
 void crearArchivo();
 void mostrarArchivo(char cadena[]);
