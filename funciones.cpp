@@ -15,25 +15,6 @@ int empaquetar(Protocolo &proto){
 }
 
 bool desempaquetar(Protocolo&proto, int tam){
-    // if (tam != proto.LNG+2){
-    //     return false;
-    // }
-    proto.CMD = proto.FRAMES[0] & 0x0F;
-    proto.LNG = ((proto.FRAMES[0] >> 4) & 0x0F);
-    if (proto.LNG > 0 && proto.LNG <= LARGO_DATA){
-        for(int i = 0; i < proto.LNG; i++){
-            proto.DATA[i] = proto.FRAMES[i+1] & 0xFF;
-        }
-    } 
-    proto.FCS = proto.FRAMES[proto.LNG+1];
-    int fcs_recibido = fcs(proto.FRAMES, proto.LNG+1);
-    if (fcs_recibido != proto.FCS){
-        return false;
-    } 
-    return true;
-}
-
-bool desempaquetar2(Protocolo&proto, int tam){
     if (tam != proto.LNG+2){                            //filtro 1, corrrespondiente al largo total del mensaje
         return false;
     }
