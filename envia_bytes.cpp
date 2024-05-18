@@ -61,7 +61,7 @@ void cb(void){
       nones = (bytes[nbytes]&0x01) + ((bytes[nbytes]&0x02)>>1) + ((bytes[nbytes]&0x04)>>2) + 
         ((bytes[nbytes]&0x08)>>3) + ((bytes[nbytes]&0x10)>>4) + ((bytes[nbytes]&0x20)>>5) + 
         ((bytes[nbytes]&0x40)>>6) + ((bytes[nbytes]&0x80)>>7);
-      digitalWrite(TX_PIN, nones%2==0); //Bit de paridad
+      digitalWrite(TX_PIN, nones%2==0); //Bit de paridad par
     }else{
       digitalWrite(TX_PIN, 1); //Canal libre durante 2 clocks
     }
@@ -81,8 +81,8 @@ void cb(void){
       }
     }
   }else{
-    //Canal en reposo
-    digitalWrite(TX_PIN, 1);
+    //Canal en reposo transmissionStarted = false
+    digitalWrite(TX_PIN, 1); // Para T.A. 1 es reposo 
   }
 }
 
