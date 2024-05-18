@@ -21,6 +21,7 @@ int main(){
   pinMode(TX_PIN, OUTPUT);
   pinMode(CLOCK_PIN,INPUT);
 
+  // LECTURA DE PINES
   while(true){
     printf("%d %d %d\n",digitalRead(CLOCK_PIN),digitalRead(TX_PIN),digitalRead(RX_PIN));
   }
