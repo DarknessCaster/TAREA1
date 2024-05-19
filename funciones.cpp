@@ -34,37 +34,36 @@ bool desempaquetar(Protocolo&proto, int tam){
     return true; // Desempaquetado correctamente
 }
 
-void guardarMensaje(char cadena[]){
+void guardarMensaje(char cadena[]){ // Guarda 
     FILE *archivo;
-    printf("\n La cadena en la funcion es %s", cadena);
+    // printf("\n La cadena en la funcion es %s", cadena); // Para probar que la cadena este bien en este punto.
     int aux;
-    //FILE *archivo = fopen("mensajes.txt", "a+");
-    archivo = fopen("mensajes.txt", "a+");
-    aux = fgetc(archivo); // Lee el primer caracter del archivo
+    archivo = fopen("mensajes.txt", "a+"); // Abre el archivo "mensajes.txt" en la carpeta actual, si no existe lo crea.
+    aux = fgetc(archivo); // Lee el primer caracter del archivo.
         if(aux != EOF){ // Si el archivo esta vacio su primer caracter sera "EOF". Solo cuando se comienza a escribir en el archivo no es necesario un salto de linea.
-            fseek(archivo, 0, SEEK_END);
+            fseek(archivo, 0, SEEK_END); // Lleva al inicio del archivo, al primer caracter.
             fprintf(archivo, "\n");
         }
     
-        for(int i=0; i<15 ; i++){ // Se hace asi por si hay espacios en la cadena de caracteres.
-            if(strcmp(&cadena[i], "\0") == 0){ // Evita escribir caracteres nulos cuando el largo de la cadena guardada es menor a 15.
+        for(int i=0; i<15 ; i++){ // Se hace asi por si hay espacios en la cadena de caracteres, en lugar de solo hacer un fprintf() del string completo.
+            if(strcmp(&cadena[i], "\0") == 0){ // Finaliza la escritura de caracteres en el archivo cuando se llega al final del string.
                 break;
             }
-            fprintf(archivo, "%c", cadena[i]); // Escribe en el archivo la cadena caracter a caracter.                      
+            fprintf(archivo, "%c", cadena[i]); // Escribe en el archivo la cadena caracter a caracter.
         }
         fclose(archivo);
 }
 
-void mostrarArchivo(char cadena[]){
-    char aux[15];
-    FILE *lectura = fopen(strcat((cadena), ".txt"), "r");
+void mostrarArchivo(char cadena[]){ // Muestra el contenido de un archivo cuyo nombre es ingresado por el usuario, si no existe devuelve mensaje de error.
+    char aux[15]; 
+    FILE *lectura = fopen(strcat((cadena), ".txt"), "r"); // Se concatena el ".txt" al final del nombre entregado e intenta abrir el archivo. 
     if(lectura == NULL){
         printf("\n El archivo %s no existe en nuestros registros.", cadena);
     }else if(fgetc(lectura) == EOF){
         printf("\n El archivo %s existe pero esta vacio.", cadena);
     }else{
         printf("\n Contenido de %s:\n", cadena);
-        while(feof(lectura) == 0){
+        while(feof(lectura) == 0){ // Mientras que no se halla llegado al final del archivo referenciado por el puntero "lectura" imprime por pantalla cada mensaje en el archivo.
             fgets(aux, 15, lectura);
             printf("%s", aux);
         }
@@ -72,17 +71,17 @@ void mostrarArchivo(char cadena[]){
     fclose(lectura);
 }
 
-void crearArchivo(){ // crea un archivo de texto a partir de un nombre entregado, si existe devuelve mensaje de error.
+void crearArchivo(){ // Crea un archivo de texto en la carpeta actual a partir de un nombre entregado, si el archivo ya existe devuelve mensaje de error.
     char cadena[25];
     char aux[15];
     printf("\n Ingrese el nombre del archivo que desea crear: ");
     scanf(" %[^\n]s", cadena);
-    FILE *lectura = fopen(strcat((cadena), ".txt"), "r");
-    if(lectura != NULL){
+    FILE *lectura = fopen(strcat((cadena), ".txt"), "r"); // Se concatena el ".txt" al final del nombre entregado e intenta abrir el archivo. 
+    if(lectura != NULL){ // Si el intento de apertura del archivo no devuelve NULL significa que si existe.
         printf("\n El archivo %s ya existe en nuestros registros.", cadena);
     }else{
-        printf("\n El archivo %s fue creado con exito.", cadena);
         fopen(cadena, "a+");
+        printf("\n El archivo %s fue creado con exito.", cadena);
     }
 }
 
