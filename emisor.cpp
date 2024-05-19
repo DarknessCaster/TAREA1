@@ -26,7 +26,7 @@ int main(){
         printf("3. Buscar archivo txt\n");
         printf("4. Ver cantidad de mensajes enviados\n");
         printf("5. Listar archivos de texto del receptor\n");
-        printf("6. Crear archivo y registrar un mensaje\n"); //  PUNTAJES EXTRAS: 2.
+        printf("6. Crear archivo y registrar un mensaje\n"); //  *** PUNTAJES EXTRAS: 2.
         printf("7. Cerrar programa receptor\n");
         printf("==============================================\n");
         printf("Ingrese la opcion deseada: ");
@@ -38,7 +38,7 @@ int main(){
                 printf("\nIngrese el mensaje a enviar (15 caracteres maximo):");
                 scanf(" %[^\n]s", proto.DATA);
                 empaquetar(proto);
-                for(int i = 0; i < 10; i++){ // Para enviar 10 veces?
+                for(int i = 0; i < 10; i++){ // *** Para enviar 10 veces?
                     // Ejecutar emisor
                     msg_enviados++;
                     }
@@ -48,19 +48,29 @@ int main(){
                 scanf(" %[^\n]s", proto.DATA);
                 empaquetar(proto);
                 // Ejecutar emisor
+                guardarMensaje((char*)proto.DATA);
                 msg_enviados++;
                 break;
             case 3:
                 printf("\nIngrese el nombre del archivo de texto a mostrar:");
-                scanf(" %[^\n]s", nombre_arch);
+                //scanf(" %[^\n]s", nombre_arch);
+                scanf(" %[^\n]s", proto.DATA);
+                empaquetar(proto);
                 // Ejecutar emisor
-                mostrarArchivo(nombre_arch);
+                mostrarArchivo(nombre_arch); // *** En realidad el receptor debe ejecutar esta funcion, el mensaje sera nombre del archivo.
+                msg_enviados++;
                 break;
             case 4:
-                printf("Mensajes enviados: %d", msg_enviados);
+                printf("Mensajes enviados: %d", msg_enviados); // *** Esto tambien debe ir en el receptor.
+                empaquetar(proto);
+                // Ejecutar emisor
+                msg_enviados++;              
                 break;
             case 5:
-                
+                empaquetar(proto);
+                // Ejecutar emisor
+                // *** En receptor ejecutar funcion (funcion pendiente);
+                msg_enviados++;                     
                 break;
             case 6:
                 crearArchivo();
@@ -68,6 +78,13 @@ int main(){
                 scanf(" %[^\n]s", proto.DATA);
                 empaquetar(proto);
                 // Ejecutar emisor
+                msg_enviados++;
+                break;
+            case 7:
+                printf("\nComunicacion finalizada");
+                empaquetar(proto);
+                // Ejecutar emisor
+                msg_enviados++;
                 break;
             default:
                 break;
