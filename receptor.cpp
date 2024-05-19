@@ -1,3 +1,4 @@
+#include <wiringPi.h>
 #include <stdio.h>
 #include <string.h>
 #include "funciones.h"
@@ -11,6 +12,18 @@ float porcentaje_e = 0;
 bool estado = true;
 
 int main(){
+    //INICIA WIRINGPI
+    if(wiringPiSetup() == -1)
+    exit(1);
+
+    //CONFIGURA PINES DE ENTRADA SALIDA
+    pinMode(RX_PIN, INPUT);
+
+    //CONFIGURA INTERRUPCION PIN CLOCK (PUENTEADO A PIN PWM)
+    if(wiringPiISR(DELAY_PIN, INT_EDGE_RISING, &cb) < 0){
+        printf("Unable to start interrupt function\n");
+    }
+
     // printf("\n================== MENU ==================\n");
     // printf("1. Enviar mensaje de prueba\n");
     // printf("2. Enviar mensaje de texto\n");

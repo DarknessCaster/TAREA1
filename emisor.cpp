@@ -9,7 +9,6 @@ int msg_enviados;
 char nombre_arch[20];
 bool transmissionStarted = false; // Indica si la transmision empieza o no.
 
-
 int main(){
     //INICIA WIRINGPI
     if(wiringPiSetup() == -1)
@@ -18,6 +17,12 @@ int main(){
     //CONFIGURA PINES DE ENTRADA SALIDA
     pinMode(TX_PIN, OUTPUT);
     
+    // CONFIGURA INTERRUPCION PIN CLOCK
+    if (wiringPiISR(DELAY_PIN, INT_EDGE_RISING, &enviarBytes) < 0) {
+        printf("No se puede iniciar la función de interrupción\n");
+        exit(1);
+    }
+
     //INICIA MENU
     do {
         printf("\n================== MENU ==================\n");
@@ -39,9 +44,10 @@ int main(){
                 scanf(" %[^\n]s", proto.DATA);
                 empaquetar(proto);
                 for(int i = 0; i < 10; i++){ // Para enviar 10 veces?
-                    // Ejecutar emisor
+                    startTransmission();
+                    enviarBytes(proto);
                     msg_enviados++;
-                    }
+                }
                 break;
             case 2:
                 printf("\nIngrese el mensaje de texto a enviar (15 caracteres maximo):");
@@ -70,8 +76,9 @@ int main(){
                 // Ejecutar emisor
                 break;
             default:
+                printf("Opción inválida. Por favor, ingrese una opción válida.\n");
                 break;
         }
-    } while (proto.CMD != 7); // se cierra el emisor
+    } while (proto.CMD != 7); // se cierra el emisor si proto.CMD = 7.
     return 0;
 }

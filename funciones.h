@@ -5,11 +5,11 @@
 
 int empaquetar(Protocolo &proto);
 bool desempaquetar(Protocolo&proto, int tam); 
-int fcs(BYTE * arr, int tam);
-void crearArchivo();
-void mostrarArchivo(char cadena[]);
 void guardarMensaje(char cadena[]);
-void enviarBytes(Protocolo proto);
+void mostrarArchivo(char cadena[]);
+void crearArchivo();
+int fcs(BYTE * arr, int tam);
+void enviarBytes(Protocolo proto, bool transmissionStarted);
 void recibirBytes();
 void startTransmission();
 
