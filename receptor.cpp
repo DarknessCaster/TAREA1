@@ -10,6 +10,16 @@ int msg_total = 0;
 float porcentaje_a = 0;
 float porcentaje_e = 0;
 bool estado = true;
+//VARIABLES GLOBALES
+volatile int errors = 0;
+volatile int nbits = 0;
+volatile int nbytes = 0;
+bool transmissionStarted = false;
+bool parity = 0;
+int nones = 0;
+BYTE bytes[50];
+bool parityError = 0;
+volatile BYTE len = 10;
 
 int main(){
     //INICIA WIRINGPI
@@ -20,7 +30,7 @@ int main(){
     pinMode(RX_PIN, INPUT);
 
     //CONFIGURA INTERRUPCION PIN CLOCK (PUENTEADO A PIN PWM)
-    if(wiringPiISR(DELAY_PIN, INT_EDGE_RISING, &cb) < 0){
+    if(wiringPiISR(DELAY_PIN, INT_EDGE_RISING, &cb_receptor) < 0){
         printf("Unable to start interrupt function\n");
     }
     // ------> recibir el protocolo, desempaquetar

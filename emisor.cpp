@@ -15,7 +15,7 @@ int nones = 0; // contador de 1s en el byte enviado
 int main(){
     //INICIA WIRINGPI
     if(wiringPiSetup() == -1)
-    exit(1);
+    return -1;
 
     //CONFIGURA PINES DE ENTRADA SALIDA
     pinMode(TX_PIN, OUTPUT);
@@ -23,7 +23,7 @@ int main(){
     // CONFIGURA INTERRUPCION PIN CLOCK
     if (wiringPiISR(DELAY_PIN, INT_EDGE_RISING, &cb_emisor) < 0) {
         printf("No se puede iniciar la función de interrupción\n");
-        exit(1);
+        return -1;
     }
 
     //INICIA MENU

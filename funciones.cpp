@@ -143,3 +143,15 @@ void cb_emisor(void) {
         digitalWrite(TX_PIN, 1);
     }
 }
+
+void cb_receptor(void){
+  bool level = digitalRead(RX_PIN);
+  //  printf("%d",level);
+  if (transmissionStarted){
+    processBit(level);
+  }
+  else if(level == 0 && !transmissionStarted){
+    transmissionStarted = true;
+    nbits = 1;
+  }
+}

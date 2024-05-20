@@ -10,6 +10,7 @@ void mostrarArchivo(char cadena[]);
 void crearArchivo();
 int fcs(BYTE * arr, int tam);
 void cb_emisor(void);
+void cb_receptor(void);
 void recibirBytes();
 void startTransmission();
 void procesarBit(bool level);
