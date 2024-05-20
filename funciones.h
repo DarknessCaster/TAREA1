@@ -9,7 +9,7 @@ void guardarMensaje(char cadena[]);
 void mostrarArchivo(char cadena[]);
 void crearArchivo();
 int fcs(BYTE * arr, int tam);
-void enviarBytes(Protocolo proto, bool transmissionStarted);
+void cb_emisor(void);
 void recibirBytes();
 void startTransmission();
 void procesarBit(bool level);

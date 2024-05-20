@@ -8,6 +8,9 @@ Protocolo proto;
 int msg_enviados;
 char nombre_arch[20];
 bool transmissionStarted = false; // Indica si la transmision empieza o no.
+volatile int nbits = 0; // contador de bits enviados
+volatile int nbytes = 0; // contador de bytes enviados
+int nones = 0; // contador de 1s en el byte enviado
 
 int main(){
     //INICIA WIRINGPI
@@ -18,7 +21,7 @@ int main(){
     pinMode(TX_PIN, OUTPUT);
     
     // CONFIGURA INTERRUPCION PIN CLOCK
-    if (wiringPiISR(DELAY_PIN, INT_EDGE_RISING, &enviarBytes) < 0) {
+    if (wiringPiISR(DELAY_PIN, INT_EDGE_RISING, &cb_emisor) < 0) {
         printf("No se puede iniciar la función de interrupción\n");
         exit(1);
     }
@@ -45,7 +48,8 @@ int main(){
                 empaquetar(proto);
                 for(int i = 0; i < 10; i++){ // Para enviar 10 veces?
                     startTransmission();
-                    enviarBytes(proto, proto.LNG+2);
+                    while(transmissionStarted)
+                        delay(2000);
                     msg_enviados++;
                 }
                 break;

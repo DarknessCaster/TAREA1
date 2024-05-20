@@ -34,6 +34,10 @@ bool desempaquetar(Protocolo&proto, int tam){
     return true; // Desempaquetado correctamente
 }
 
+void startTransmission(){
+  transmissionStarted = true;
+}
+
 void guardarMensaje(char cadena[]){ // Guarda 
     FILE *archivo;
     // printf("\n La cadena en la funcion es %s", cadena); // Para probar que la cadena este bien en este punto.
@@ -95,11 +99,7 @@ int fcs(BYTE * arr, int tam){
     return sum_bits;
 }
 
-void enviarBytes(Protocolo p, bool transmissionStarted) {
-    volatile int nbits = 0; // contador de bits enviados
-    volatile int nbytes = 0; // contador de bytes enviados
-    int nones = 0; // contador de 1s en el byte enviado
-    
+void cb_emisor(void) {
     if (transmissionStarted) { // Si transmision se inicia...
         // Escribe en el pin TX
         if (nbits == 0) {
@@ -107,15 +107,15 @@ void enviarBytes(Protocolo p, bool transmissionStarted) {
         } 
         else if (nbits < 9) {
             // envia bit a bit el dato hasta enviar el byte
-            digitalWrite(TX_PIN, (p.FRAMES[nbytes] >> (nbits-1)) & 0x01); 
+            digitalWrite(TX_PIN, (proto.FRAMES[nbytes] >> (nbits-1)) & 0x01); 
             // printf("%d", (p.FRAMES[nbytes] >> (nbits-1)) & 0x01);
         } 
         else if (nbits == 9) {
             // printf("\n");
             // Guardar bits activos (cantidad de 1s) en la variable nones
-            nones = (p.FRAMES[nbytes] & 0x01) + ((p.FRAMES[nbytes] & 0x02) >> 1) + ((p.FRAMES[nbytes] & 0x04) >> 2) + 
-                    ((p.FRAMES[nbytes] & 0x08) >> 3) + ((p.FRAMES[nbytes] & 0x10) >> 4) + ((p.FRAMES[nbytes] & 0x20) >> 5) + 
-                    ((p.FRAMES[nbytes] & 0x40) >> 6) + ((p.FRAMES[nbytes] & 0x80) >> 7);
+            nones = (proto.FRAMES[nbytes] & 0x01) + ((proto.FRAMES[nbytes] & 0x02) >> 1) + ((proto.FRAMES[nbytes] & 0x04) >> 2) + 
+                    ((proto.FRAMES[nbytes] & 0x08) >> 3) + ((proto.FRAMES[nbytes] & 0x10) >> 4) + ((proto.FRAMES[nbytes] & 0x20) >> 5) + 
+                    ((proto.FRAMES[nbytes] & 0x40) >> 6) + ((proto.FRAMES[nbytes] & 0x80) >> 7);
 
             digitalWrite(TX_PIN, nones % 2 == 0); // Se envia el Bit de paridad PAR 
         } 
@@ -132,7 +132,7 @@ void enviarBytes(Protocolo p, bool transmissionStarted) {
             nbytes++;
 
             // Finaliza la comunicación
-            if (nbytes == p.LNG) {
+            if (nbytes == proto.LNG) {
                 transmissionStarted = false;
                 nbytes = 0;
             }
@@ -142,38 +142,4 @@ void enviarBytes(Protocolo p, bool transmissionStarted) {
         // Canal en reposo
         digitalWrite(TX_PIN, 1);
     }
-}
-
-void recibirBytes(bool transmissionStarted){
-    bool level = digitalRead(RX_PIN);
-    //  printf("%d",level);
-    if (transmissionStarted){
-        procesarBit(level);
-    }
-    else if(level == 0 && !transmissionStarted){
-        transmissionStarted = true;
-        nbits = 1;
-    }
-}
-
-void startTransmission(){
-  transmissionStarted = true;
-}
-
-void procesarBit(bool level){
-  if(nbits < 9){
-    bytes[nbytes] |= level << (nbits-1);
-  } 
-  else if (nbits==9){
-    //    printf("\n");
-    parity = level;
-    nones = (bytes[nbytes]&0x01) + ((bytes[nbytes]&0x02)>>1) + ((bytes[nbytes]&0x04)>>2) + ((bytes[nbytes]&0x08)>>3)
-            + ((bytes[nbytes]&0x10)>>4) + ((bytes[nbytes]&0x20)>>5) + ((bytes[nbytes]&0x40)>>6) + ((bytes[nbytes]&0x80)>>7);
-    if(parity != (nones%2==0)){
-      parityError = true;
-    }
-    nbytes++;
-    transmissionStarted = false;
-  }
-  nbits++;
 }
