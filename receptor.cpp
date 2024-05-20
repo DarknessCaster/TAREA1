@@ -25,7 +25,6 @@ int main(){
     }
     // ------> recibir el protocolo, desempaquetar
     recibirBytes();
-
     
     // El CMD recibido en la strcut es el que se usará en el switch
     // si(if) desempaquetar == false --->  protocolo recibido de forma erronea:

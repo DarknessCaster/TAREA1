@@ -144,10 +144,36 @@ void enviarBytes(Protocolo p, bool transmissionStarted) {
     }
 }
 
-void recibirBytes(){
-    
+void recibirBytes(bool transmissionStarted){
+    bool level = digitalRead(RX_PIN);
+    //  printf("%d",level);
+    if (transmissionStarted){
+        procesarBit(level);
+    }
+    else if(level == 0 && !transmissionStarted){
+        transmissionStarted = true;
+        nbits = 1;
+    }
 }
 
 void startTransmission(){
   transmissionStarted = true;
+}
+
+void procesarBit(bool level){
+  if(nbits < 9){
+    bytes[nbytes] |= level << (nbits-1);
+  } 
+  else if (nbits==9){
+    //    printf("\n");
+    parity = level;
+    nones = (bytes[nbytes]&0x01) + ((bytes[nbytes]&0x02)>>1) + ((bytes[nbytes]&0x04)>>2) + ((bytes[nbytes]&0x08)>>3)
+            + ((bytes[nbytes]&0x10)>>4) + ((bytes[nbytes]&0x20)>>5) + ((bytes[nbytes]&0x40)>>6) + ((bytes[nbytes]&0x80)>>7);
+    if(parity != (nones%2==0)){
+      parityError = true;
+    }
+    nbytes++;
+    transmissionStarted = false;
+  }
+  nbits++;
 }

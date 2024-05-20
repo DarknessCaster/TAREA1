@@ -12,5 +12,6 @@ int fcs(BYTE * arr, int tam);
 void enviarBytes(Protocolo proto, bool transmissionStarted);
 void recibirBytes();
 void startTransmission();
+void procesarBit(bool level);
 
 #endif
