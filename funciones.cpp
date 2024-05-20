@@ -15,10 +15,10 @@ int empaquetar(Protocolo &proto){
     return proto.LNG +2;
 }
 
-bool desempaquetar(Protocolo&proto, int tam){
-    if (tam != proto.LNG+2){                            //filtro 1, corrrespondiente al largo total del mensaje
-        return false;
-    }
+bool desempaquetar(Protocolo&proto){
+    // if (tam != proto.LNG+2){                            //filtro 1, corrrespondiente al largo total del mensaje
+    //     return false;
+    // }
     proto.CMD = proto.FRAMES[0] & 0x0F;
     proto.LNG = ((proto.FRAMES[0] >> 4) & 0x0F);
     if (proto.LNG > 0 && proto.LNG <= LARGO_DATA){      
@@ -27,10 +27,10 @@ bool desempaquetar(Protocolo&proto, int tam){
         }
     } 
     proto.FCS = proto.FRAMES[proto.LNG+1];
-    int fcs_recibido = fcs(proto.FRAMES, proto.LNG+1);
-    if (fcs_recibido != proto.FCS){                     //filtro 2, correspondiente a la comparacion de los fcs 
-        return false;
-    } 
+    // int fcs_recibido = fcs(proto.FRAMES, proto.LNG+1);
+    // if (fcs_recibido != proto.FCS){                     //filtro 2, correspondiente a la comparacion de los fcs 
+    //     return false;
+    // } 
     return true; // Desempaquetado correctamente
 }
 
@@ -156,7 +156,7 @@ void cb_receptor(void){
   }
 }
 
-void procesarBit(bool level) {
+void procesarBit(bool level){
     if (nbits < 9) { // Si estamos recibiendo uno de los primeros 8 bits de datos
         proto.FRAMES[nbytes] |= level << (nbits - 1);
     } 

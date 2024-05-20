@@ -4,7 +4,7 @@
 #include "protocolo.h"
 
 int empaquetar(Protocolo &proto);
-bool desempaquetar(Protocolo&proto, int tam); 
+bool desempaquetar(Protocolo&proto); 
 void guardarMensaje(char cadena[]);
 void mostrarArchivo(char cadena[]);
 void crearArchivo();

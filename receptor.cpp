@@ -34,16 +34,9 @@ int main(){
         printf("Unable to start interrupt function\n");
     }
     printf("Delay\n");
-    while(nbytes < LARGO_DATA) // NBYTES MENOR A LONGITUD DE DATA??a
-        delay(300);
-    desempaquetar(proto, 15); // 15 deberia ser el numero de bytes 
-
-    // Ya deberia estar recibiendo a FRAMES
-    // El CMD recibido en la strcut es el que se usará en el switch
-    // si(if) desempaquetar == false --->  protocolo recibido de forma erronea:
-    // porfavor intente nuevamente, se cierra el switch y se vuelve al reposo
-    // si(if) desempaquetar == true --> ejecuta el cmd
-    getchar(); 
+    desempaquetar(proto)
+    while(nbytes < proto.LNG) // NBYTES MENOR A LONGITUD DE DATA??a
+        delay(300); 
     switch(proto.CMD){
         case 1:
             estado = desempaquetar(proto, proto.LNG+2);
