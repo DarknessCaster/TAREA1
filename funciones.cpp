@@ -155,3 +155,30 @@ void cb_receptor(void){
     nbits = 1;
   }
 }
+
+void procesarBit(bool level) {
+    if (nbits < 9) { // Si estamos recibiendo uno de los primeros 8 bits de datos
+        proto.FRAMES[nbytes] |= level << (nbits - 1);
+    } 
+    else if (nbits == 9) { // Si estamos recibiendo el bit de paridad
+        parity = level;
+        // Calcular la cantidad de bits 1 en el byte recibido
+        nones = (proto.FRAMES[nbytes] & 0x01) + ((proto.FRAMES[nbytes] & 0x02) >> 1) +
+                ((proto.FRAMES[nbytes] & 0x04) >> 2) + ((proto.FRAMES[nbytes] & 0x08) >> 3) +
+                ((proto.FRAMES[nbytes] & 0x10) >> 4) + ((proto.FRAMES[nbytes] & 0x20) >> 5) +
+                ((proto.FRAMES[nbytes] & 0x40) >> 6) + ((proto.FRAMES[nbytes] & 0x80) >> 7);
+        
+        // Verificar si la paridad recibida coincide con la paridad calculada
+        if (parity != (nones % 2 == 0)) {
+            parityError = true;
+        }
+        
+        // Incrementar el contador de bytes y finalizar la transmisión actual
+        nbytes++;
+        transmissionStarted = false;
+    }
+    
+    // Incrementar el contador de bits
+    nbits++;
+}
+

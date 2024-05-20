@@ -4,10 +4,10 @@
 #include "funciones.h"
 
 Protocolo proto; // Deberia recibir proto desde emisor
-int msg_c_err = 0;
+int msg_c_err = 0; // mensajes con error
 int msg_s_err = 0; // Mensaje sin error detectado... seria lo mismo que recibidos correctamente?
-int msg_total = 0;
-float porcentaje_a = 0;
+int msg_total = 0; // mensajes en total
+float porcentaje_a = 0; // porcentaje de acierto
 float porcentaje_e = 0;
 bool estado = true;
 //VARIABLES GLOBALES
@@ -17,9 +17,9 @@ volatile int nbytes = 0;
 bool transmissionStarted = false;
 bool parity = 0;
 int nones = 0;
-BYTE bytes[50];
+BYTE FRAMES[LARGO_DATA+2]; // PAQUETE RECIBIDO
 bool parityError = 0;
-volatile BYTE len = 10;
+volatile BYTE len = 10; // LARGO
 
 int main(){
     //INICIA WIRINGPI
@@ -33,16 +33,16 @@ int main(){
     if(wiringPiISR(DELAY_PIN, INT_EDGE_RISING, &cb_receptor) < 0){
         printf("Unable to start interrupt function\n");
     }
-    // ------> recibir el protocolo, desempaquetar
-    recibirBytes();
-    
+    printf("Delay\n");
+    while(nbytes < LARGO_DATA) // NBYTES MENOR A LONGITUD DE DATA??a
+        delay(300);
+    desempaquetar(proto, 15); // 15 deberia ser el numero de bytes 
+
+    // Ya deberia estar recibiendo a FRAMES
     // El CMD recibido en la strcut es el que se usará en el switch
     // si(if) desempaquetar == false --->  protocolo recibido de forma erronea:
     // porfavor intente nuevamente, se cierra el switch y se vuelve al reposo
     // si(if) desempaquetar == true --> ejecuta el cmd
-    //
-
-
     getchar(); 
     switch(proto.CMD){
         case 1:

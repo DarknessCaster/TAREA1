@@ -59,7 +59,6 @@ int main(){
                 empaquetar(proto);
                 // Ejecutar emisor
                 startTransmission();
-                enviarBytes(proto, proto.LNG+2);
                 guardarMensaje((char*)proto.DATA);
                 msg_enviados++;
                 break;
