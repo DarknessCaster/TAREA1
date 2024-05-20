@@ -45,7 +45,7 @@ int main(){
                 empaquetar(proto);
                 for(int i = 0; i < 10; i++){ // Para enviar 10 veces?
                     startTransmission();
-                    enviarBytes(proto);
+                    enviarBytes(proto, proto.LNG+2);
                     msg_enviados++;
                 }
                 break;
