@@ -43,14 +43,9 @@ int main(){
                 printf("\nIngrese el mensaje a enviar (15 caracteres maximo):");
                 scanf(" %[^\n]s", proto.DATA);
                 empaquetar(proto);
-<<<<<<< HEAD
                 for(int i = 0; i < 10; i++){ // Para enviar 10 veces?
                     startTransmission();
                     enviarBytes(proto);
-=======
-                for(int i = 0; i < 10; i++){ // *** Para enviar 10 veces?
-                    // Ejecutar emisor
->>>>>>> 30d56c578170773551c0a616ca9ac5f622fedd7d
                     msg_enviados++;
                 }
                 break;
