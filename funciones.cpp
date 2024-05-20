@@ -98,7 +98,7 @@ int fcs(BYTE * arr, int tam){
 void enviarBytes(Protocolo p, bool transmissionStarted) {
     volatile int nbits = 0; // contador de bits enviados
     volatile int nbytes = 0; // contador de bytes enviados
-    int nones = 0;
+    int nones = 0; // contador de 1s en el byte enviado
     
     if (transmissionStarted) { // Si transmision se inicia...
         // Escribe en el pin TX

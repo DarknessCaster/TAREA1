@@ -23,21 +23,10 @@ int main(){
     if(wiringPiISR(DELAY_PIN, INT_EDGE_RISING, &cb) < 0){
         printf("Unable to start interrupt function\n");
     }
-
-    // printf("\n================== MENU ==================\n");
-    // printf("1. Enviar mensaje de prueba\n");
-    // printf("2. Enviar mensaje de texto\n");
-    // printf("3. Buscar archivo txt\n");
-    // printf("4. Ver cantidad de mensajes enviados\n");
-    // printf("5. Listar archivos de texto del receptor\n");
-    // printf("6. Crear archivo y registrar un mensaje\n"); //  PUNTAJES EXTRAS: 2.
-    // printf("7. Cerrar programa receptor\n");
-    // printf("==============================================\n");
-    // printf("Ingrese la opcion deseada: ");
-    // scanf("%d", &proto.CMD);
-
-
     // ------> recibir el protocolo, desempaquetar
+    recibirBytes();
+
+    
     // El CMD recibido en la strcut es el que se usará en el switch
     // si(if) desempaquetar == false --->  protocolo recibido de forma erronea:
     // porfavor intente nuevamente, se cierra el switch y se vuelve al reposo
