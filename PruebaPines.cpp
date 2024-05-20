@@ -24,6 +24,7 @@ int main(){
   // LECTURA DE PINES
   while(true){
     printf("%d %d %d\n",digitalRead(CLOCK_PIN),digitalRead(TX_PIN),digitalRead(RX_PIN));
+    delay(400);
   }
 
   return 0;
