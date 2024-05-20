@@ -132,7 +132,7 @@ void cb_emisor(void) {
             nbytes++;
 
             // Finaliza la comunicación
-            if (nbytes == proto.LNG) {
+            if (nbytes == proto.LNG+1) {
                 transmissionStarted = false;
                 nbytes = 0;
             }
